@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 
 from yatube.settings import PAGINATOR_PAGE
-from .models import Post, Group, Comment, Follow, User
+from .models import Post, Group, Follow, User
 from .forms import PostForm, CommentForm
 
 
@@ -76,14 +76,18 @@ def post_edit(request, username, post_id):
     if form.is_valid():
         form.save()
         return redirect('post', username, post_id)
-    return render(request, 'new.html', {'user': user, 'form': form, 'post': post})
+    return render(
+        request,
+        'new.html',
+        {'user': user, 'form': form, 'post': post}
+    )
 
 
 def page_not_found(request, exception):
     return render(
-        request, 
-        'misc/404.html', 
-        {'path': request.path}, 
+        request,
+        'misc/404.html',
+        {'path': request.path},
         status=404
     )
 
@@ -105,8 +109,8 @@ def post_view(request, username, post_id):
          'form': form,
          'posts': posts,
          'post': post,
-         'comments': comments,
-    })
+         'comments': comments}
+    )
 
 
 @login_required
