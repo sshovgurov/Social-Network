@@ -61,7 +61,10 @@ def profile(request, username):
     return render(
         request,
         'profile.html',
-        {'author': user, 'page': page, 'paginator': paginator, 'post_list': post_list}
+        {'author': user,
+         'page': page,
+         'paginator': paginator,
+         'post_list': post_list}
     )
 
 
