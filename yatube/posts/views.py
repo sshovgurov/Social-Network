@@ -61,7 +61,7 @@ def profile(request, username):
     return render(
         request,
         'profile.html',
-        {'author': user, 'page': page, 'paginator': paginator}
+        {'author': user, 'page': page, 'paginator': paginator, 'post_list': post_list}
     )
 
 
@@ -127,24 +127,24 @@ def add_comment(request, username, post_id):
 
 @login_required
 def follow_index(request):
-    posts = Post.objects.filter(author__follower__user=request.user)
+    posts = Post.objects.filter(author__following__user=request.user)
     paginator = Paginator(posts, PAGINATOR_PAGE)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
     return render(
         request,
         'follow.html',
-        {'page': page, 'paginator': paginator},
+        {'page': page, 'posts': posts},
     )
 
 
 @login_required
 def profile_follow(request, username):
     user = User.objects.get(username=username)
-    if request.user != user:
-        Follow.objects.create(user=request.user, author=user)
-        return redirect('profile', username=username)
-    return redirect('follow_index')
+    if request.user == user:
+        return redirect('profile', username)
+    Follow.objects.get_or_create(user=request.user, author=user)
+    return redirect('profile', username)
 
 
 @login_required
