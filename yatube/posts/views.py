@@ -8,7 +8,7 @@ from .forms import PostForm, CommentForm
 
 
 def index(request):
-    post_list = Post.objects.select_related('group').all().order_by('-pub_date')
+    post_list = Post.objects.select_related('group').all()
     paginator = Paginator(post_list, PAGINATOR_PAGE)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
