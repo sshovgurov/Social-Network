@@ -2,10 +2,9 @@ from django.contrib import admin
 
 from .models import Post, Group, Follow, Comment
 
+
 @admin.register(Follow)
-
 @admin.register(Comment)
-
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     """Администрационная панель к модели записей"""
