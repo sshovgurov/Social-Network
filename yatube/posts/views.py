@@ -8,7 +8,7 @@ from .forms import PostForm, CommentForm
 
 
 def index(request):
-    post_list = Post.objects.all().order_by('-pub_date')
+    post_list = Post.objects.select_related('group').all().order_by('-pub_date')
     paginator = Paginator(post_list, PAGINATOR_PAGE)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
@@ -152,6 +152,6 @@ def profile_follow(request, username):
 
 @login_required
 def profile_unfollow(request, username):
-    author = User.objects.get(username=username)
+    author = get_object_or_404(User, username=username)
     Follow.objects.filter(user=request.user, author=author).delete()
     return redirect('profile', username)

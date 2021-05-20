@@ -2,7 +2,7 @@ from django import forms
 from django.test import Client, TestCase
 from django.urls import reverse
 
-from posts.models import Group, Post, User
+from posts.models import Group, Post, User, Follow
 
 
 class PostViewTests(TestCase):
@@ -88,11 +88,3 @@ class PostViewTests(TestCase):
         )
         self.assertEqual(Post.objects.get(id=PostViewTests.post.id).text,
                          form_data['text'])
-
-    """def test_handler404_renders_template_response(self):
-        response = self.client.get('/404/')
-        self.assertContains(response, status_code=404)
-
-    def test_handler505_renders_template_response(self):
-        response = self.client.get('/500/')
-        self.assertContains(response, status_code=500)"""

@@ -1,8 +1,9 @@
 from django.contrib import admin
 
-from .models import Post, Group
+from .models import Post, Group, Follow, Comment
 
-
+@admin.register(Follow)
+@admin.register(Comment)
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     """Администрационная панель к модели записей"""
@@ -20,3 +21,4 @@ class GroupAdmin(admin.ModelAdmin):
     list_filter = ('title',)
     empty_value_display = '-пусто-'
     prepopulated_fields = {'slug': ('title',)}
+
