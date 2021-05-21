@@ -97,7 +97,6 @@ class FollowUnfollowContextPagesTests(TestCase):
         cls.user = User.objects.create_user(username='SubZero')
         cls.sub = User.objects.create_user(username='Skorpion')
 
-
     def setUp(self):
         self.authorized_client = Client()
         self.authorized_client.force_login(self.user)
