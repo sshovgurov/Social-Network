@@ -2,7 +2,7 @@ from django import forms
 from django.test import Client, TestCase
 from django.urls import reverse
 
-from posts.models import Group, Post, User
+from posts.models import Group, Post, Follow, User
 
 
 class PostViewTests(TestCase):
@@ -88,3 +88,27 @@ class PostViewTests(TestCase):
         )
         self.assertEqual(Post.objects.get(id=PostViewTests.post.id).text,
                          form_data['text'])
+
+
+class FollowUnfollowContextPagesTests(TestCase):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.user = User.objects.create_user(username='SubZero')
+        cls.sub = User.objects.create_user(username='Skorpion')
+
+
+    def setUp(self):
+        self.authorized_client = Client()
+        self.authorized_client.force_login(self.user)
+
+    def test_follow_correct_context(self):
+        self.authorized_client.get(
+            reverse('profile_follow', kwargs={'username': self.sub.username}))
+        response = self.authorized_client.get(reverse('follow_index'))
+        self.assertEqual(len(response.context.get('page').object_list), 0)
+        self.authorized_client.get(
+            reverse('profile_unfollow',
+                    kwargs={'username': self.sub.username}))
+        response = self.authorized_client.get(reverse('follow_index'))
+        self.assertEqual(len(response.context.get('page').object_list), 0)
